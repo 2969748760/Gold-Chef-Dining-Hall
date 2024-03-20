@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.blxz.mapper.FoodMapper">
+    <select id="selectAll" resultType="Food">
+        select * from warehouse where status=1
+    </select>
+
+    <insert id="addFood">
+        insert into warehouse (dishes,price,inventory,madetime,shelflife,summary,orderway,status) values (#{dishes},#{price},#{inventory},#{madetime},#{shelflife},#{summary},#{orderway},#{status})
+    </insert>
+
+    <select id="selectById" resultType="Food">
+        select * from warehouse where id=#{id} and status=1
+    </select>
+
+    <update id="updateFood">
+        update warehouse set dishes=#{dishes},price=#{price},inventory=#{inventory},madetime=#{madetime},shelflife=#{shelflife},summary=#{summary},orderway=#{orderway}
+        where id=#{id} and status=1
+    </update>
+
+    <update id="deleteFoodTmp">
+        update warehouse set status=0,orderway='已下架' where id=#{id}
+    </update>
+
+    <delete id="deleteFoodCom">
+        delete from warehouse where id=#{id}
+    </delete>
+
+    <select id="selectAllDeleted" resultType="Food">
+        select * from warehouse where status=0
+    </select>
+
+    <select id="selectDeleteById" resultType="Food">
+        select * from warehouse where id=#{id} and status=0
+    </select>
+
+    <update id="restoreFood">
+        update warehouse set dishes=#{dishes},price=#{price},inventory=#{inventory},madetime=#{madetime},shelflife=#{shelflife},summary=#{summary},orderway=#{orderway},status=1
+        where id=#{id} and status=0
+    </update>
+
+    <select id="FuzzyQueryByDishes" resultType="Food">
+        select * from warehouse where dishes like "%"#{dishes}"%"
+    </select>
+</mapper>
